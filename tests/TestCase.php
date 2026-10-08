@@ -32,6 +32,8 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
+        $this->app['view']->addNamespace('workbench', __DIR__.'/../workbench/resources/views');
+
         $this->actingAs(User::factory()->create());
         Filament::setCurrentPanel('admin');
     }
@@ -62,10 +64,35 @@ abstract class TestCase extends Orchestra
         $app['config']->set('app.key', 'base64:'.base64_encode(str_repeat('a', 32)));
         $app['config']->set('database.default', 'testing');
         $app['config']->set('auth.providers.users.model', User::class);
+
+        $app['config']->set('logging.default', 'null');
+
+        // Live mode with dummy keys; the network is always faked in tests.
+        $app['config']->set('filament-captcha.driver', 'turnstile');
+
+        foreach (['recaptcha_v2', 'recaptcha_v2_invisible', 'recaptcha_v3', 'turnstile', 'hcaptcha'] as $driver) {
+            $app['config']->set("filament-captcha.drivers.{$driver}.site_key", "site-{$driver}");
+            $app['config']->set("filament-captcha.drivers.{$driver}.secret_key", "secret-{$driver}");
+        }
     }
 
     protected function defineDatabaseMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../workbench/database/migrations');
+    }
+
+    /**
+     * The widget config out of the rendered x-data="filamentCaptcha({ config: JSON.parse('...') })".
+     *
+     * @return array<string, mixed>
+     */
+    protected function clientConfig(string $html): array
+    {
+        $this->assertSame(1, preg_match("/JSON\\.parse\\('(.*?)'\\)/s", $html, $matches), 'No widget config in the HTML.');
+
+        // The payload is the body of a JS string literal; its escapes (\u0022, \/) are JSON-compatible.
+        $json = json_decode('"'.$matches[1].'"', false, flags: JSON_THROW_ON_ERROR);
+
+        return json_decode($json, true, flags: JSON_THROW_ON_ERROR);
     }
 }

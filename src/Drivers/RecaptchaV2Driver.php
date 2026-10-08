@@ -1,0 +1,56 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Asignua\FilamentCaptcha\Drivers;
+
+/**
+ * Google reCAPTCHA v2, "I'm not a robot" checkbox.
+ */
+class RecaptchaV2Driver extends SiteVerifyDriver
+{
+    public function name(): string
+    {
+        return 'recaptcha_v2';
+    }
+
+    protected function endpoint(): string
+    {
+        return 'https://'.$this->domain().'/recaptcha/api/siteverify';
+    }
+
+    protected function domain(): string
+    {
+        $domain = $this->string('domain');
+
+        return $domain !== '' ? $domain : 'www.google.com';
+    }
+
+    protected function invisible(): bool
+    {
+        return false;
+    }
+
+    public function clientConfig(array $options = []): array
+    {
+        $config = parent::clientConfig($options);
+        $locale = $config['locale'];
+
+        return $config + [
+            'kind' => 'recaptcha',
+            'mode' => $this->invisible() ? 'execute' : 'widget',
+            'scriptUrl' => 'https://'.$this->domain().'/recaptcha/api.js?render=explicit'.(is_string($locale) ? '&hl='.rawurlencode($locale) : ''),
+        ];
+    }
+
+    public function cspSources(): array
+    {
+        $origin = 'https://'.$this->domain();
+
+        return [
+            'script-src' => [$origin, 'https://www.gstatic.com'],
+            'frame-src' => [$origin],
+            'connect-src' => [$origin],
+        ];
+    }
+}

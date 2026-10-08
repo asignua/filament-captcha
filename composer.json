@@ -1,7 +1,7 @@
 {
     "name": "asignua/filament-captcha",
-    "description": "TODO: one-sentence description of Captcha for Filament.",
-    "keywords": ["filament", "filament-plugin", "laravel"],
+    "description": "Captcha field for Filament forms and Livewire components: reCAPTCHA v2/v3, Cloudflare Turnstile and hCaptcha with a server-side validation rule.",
+    "keywords": ["filament", "filament-plugin", "laravel", "livewire", "captcha", "recaptcha", "turnstile", "hcaptcha"],
     "homepage": "https://github.com/asignua/filament-captcha",
     "support": {
         "issues": "https://github.com/asignua/filament-captcha/issues",

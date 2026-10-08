@@ -25,6 +25,6 @@ class SmokeTest extends TestCase
 
     public function test_the_translations_are_loaded(): void
     {
-        $this->assertSame('Sample', __('filament-captcha::filament-captcha.sample'));
+        $this->assertSame('Please complete the security check.', __('filament-captcha::filament-captcha.errors.missing_token'));
     }
 }

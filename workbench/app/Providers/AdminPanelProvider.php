@@ -27,7 +27,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->plugin(CaptchaPlugin::make())
+            ->registration()
+            ->passwordReset()
+            ->plugin(CaptchaPlugin::make()->login()->registration()->passwordReset())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
