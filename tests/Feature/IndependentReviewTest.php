@@ -328,4 +328,31 @@ class IndependentReviewTest extends TestCase
             $this->assertNotSame($value, $ukrainian[$key], "uk.{$key} is still English");
         }
     }
+
+    public function test_an_overlong_token_is_rejected_without_a_network_call(): void
+    {
+        Http::fake();
+
+        $result = Captcha::verify(new VerificationRequest(str_repeat('A', 5000)), 'turnstile');
+
+        $this->assertSame(Failure::Rejected, $result->failure);
+        Http::assertNothingSent();
+    }
+
+    public function test_a_server_error_is_still_an_outage_under_fail_open(): void
+    {
+        config(['filament-captcha.fail_open' => true]);
+        Http::fake([self::TURNSTILE => Http::response('boom', 502)]);
+
+        $this->assertTrue(Captcha::verify(new VerificationRequest('t'), 'turnstile')->success);
+    }
+
+    public function test_the_fake_config_flag_is_ignored_in_production(): void
+    {
+        config(['filament-captcha.fake' => true]);
+        $this->app['env'] = 'production';
+        $this->app->detectEnvironment(fn (): string => 'production');
+
+        $this->assertNotSame(Mode::Fake, Captcha::mode());
+    }
 }

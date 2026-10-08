@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Asignua\FilamentCaptcha\Tests\Feature;
 
+use Asignua\FilamentCaptcha\Drivers\TurnstileDriver;
 use Asignua\FilamentCaptcha\Enums\Mode;
 use Asignua\FilamentCaptcha\Facades\Captcha;
 use Asignua\FilamentCaptcha\Tests\TestCase;
+use Closure;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +21,7 @@ class RuleAndModesTest extends TestCase
     /**
      * @return list<string>
      */
-    private function errors(mixed $value, ?\Closure $configure = null): array
+    private function errors(mixed $value, ?Closure $configure = null): array
     {
         $rule = Captcha::rule();
 
@@ -209,7 +211,7 @@ class RuleAndModesTest extends TestCase
 
     public function test_a_custom_driver_can_be_registered(): void
     {
-        Captcha::extend('mine', fn (array $config, $http) => new class($config, $http) extends \Asignua\FilamentCaptcha\Drivers\TurnstileDriver
+        Captcha::extend('mine', fn (array $config, $http) => new class($config, $http) extends TurnstileDriver
         {
             public function name(): string
             {

@@ -104,7 +104,16 @@
 
                 this.mount();
 
-                var onReset = function () { self.reset(); };
+                var onReset = function (event) {
+                    var target = event && event.detail && event.detail.id;
+                    var own = self.$wire && (self.$wire.$id || (self.$wire.__instance && self.$wire.__instance.id));
+
+                    if (target && own && target !== own) {
+                        return;
+                    }
+
+                    self.reset();
+                };
                 window.addEventListener('filament-captcha:reset', onReset);
                 this.offs.push(function () { window.removeEventListener('filament-captcha:reset', onReset); });
 
@@ -297,7 +306,10 @@
                         return;
                     }
 
-                    if (!self.state || !self.carries(context.commit)) {
+                    var calls = context.commit && context.commit.calls;
+
+                    /* only a request that called a method can have spent the token; a live() field update did not */
+                    if (!self.state || !Array.isArray(calls) || calls.length === 0 || !self.carries(context.commit)) {
                         return;
                     }
 

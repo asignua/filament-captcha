@@ -100,8 +100,17 @@ class CaptchaManager
 
     public function mode(?string $driver = null): Mode
     {
-        if ($this->fake === true || (bool) config('filament-captcha.fake', false)) {
+        if ($this->fake === true) {
             return Mode::Fake;
+        }
+
+        if ((bool) config('filament-captcha.fake', false)) {
+            // The config flag is for local/testing only: a forgotten CAPTCHA_FAKE must not open production.
+            if ($this->app->isLocal() || $this->app->runningUnitTests()) {
+                return Mode::Fake;
+            }
+
+            $this->warnFakeIgnored();
         }
 
         if (config('filament-captcha.enabled') === false || config('filament-captcha.enabled') === 'false') {
@@ -222,6 +231,16 @@ class CaptchaManager
         }
 
         return $merged;
+    }
+
+    private function warnFakeIgnored(): void
+    {
+        if (isset($this->warned['*fake'])) {
+            return;
+        }
+
+        $this->warned['*fake'] = true;
+        $this->log->warning('filament-captcha.fake is set outside local/testing and is IGNORED. Use Captcha::fake() in code if you really mean it.');
     }
 
     private function warnOnce(string $driver, bool $disabled): void

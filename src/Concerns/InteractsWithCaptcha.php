@@ -46,6 +46,6 @@ trait InteractsWithCaptcha
     public function resetCaptcha(): void
     {
         $this->captchaToken = '';
-        $this->dispatch('filament-captcha:reset');
+        $this->dispatch('filament-captcha:reset', id: $this->getId());
     }
 }

@@ -33,6 +33,12 @@ class RecaptchaV2Driver extends SiteVerifyDriver
 
     public function clientConfig(array $options = []): array
     {
+        // A checkbox key cannot be invisible (Google issues a separate key type: use recaptcha_v2_invisible),
+        // and an invisible widget that is never executed would only produce missing tokens.
+        if (!$this->invisible() && ($options['size'] ?? null) === 'invisible') {
+            $options['size'] = null;
+        }
+
         $config = parent::clientConfig($options);
         $locale = $config['locale'];
 
@@ -49,7 +55,7 @@ class RecaptchaV2Driver extends SiteVerifyDriver
 
         return [
             'script-src' => [$origin, 'https://www.gstatic.com'],
-            'frame-src' => [$origin],
+            'frame-src' => [$origin, 'https://recaptcha.google.com'],
             'connect-src' => [$origin],
         ];
     }

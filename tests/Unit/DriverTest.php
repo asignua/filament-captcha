@@ -11,6 +11,7 @@ use Asignua\FilamentCaptcha\VerificationRequest;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class DriverTest extends TestCase
@@ -192,7 +193,7 @@ class DriverTest extends TestCase
 
     public function test_an_unknown_driver_is_an_error(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         Captcha::driver('nope');
     }

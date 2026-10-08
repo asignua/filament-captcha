@@ -17,7 +17,7 @@ the error state.
 
 - PHP 8.3+
 - Laravel 12 or 13
-- Filament 5 (Livewire 3/4 for the plain-Livewire widget)
+- Filament 5 (which brings Livewire 4; the plain-Livewire widget uses the same)
 
 ## Installation
 
@@ -138,6 +138,14 @@ class Login extends \Filament\Auth\Pages\Login
 }
 ```
 
+The trait works without registering the plugin (the driver then comes from `config/filament-captcha.php`), but the page
+still needs the client script: add `<x-filament-captcha::scripts />` through a panel render hook (for example
+`PanelsRenderHook::HEAD_END`).
+
+Multi-factor login: Filament runs `authenticate()` twice (password, then the challenge). The captcha is checked on the
+first step only; on the challenge step the field is hidden, because the token was spent. This works for the plugin's pages
+and for the trait alike.
+
 ### Tests
 
 ```php
@@ -147,7 +155,7 @@ Captcha::fake();                 // widget not drawn, nothing sent, validation p
 Captcha::fake(passes: false);    // validation fails
 ```
 
-Or set `CAPTCHA_FAKE=true` in `.env.testing`. Without a call to `fake()`, use `Http::fake()` for the provider's siteverify
+Or set `CAPTCHA_FAKE=true` in `.env.testing` (honoured only in `local` / `testing`; elsewhere it is ignored with a log warning). Without a call to `fake()`, use `Http::fake()` for the provider's siteverify
 URL: the package resolves the HTTP client on every verification, so it honours your fake.
 
 ## Configuration
@@ -200,8 +208,10 @@ provider's script tag it injects. With `'strict-dynamic'` that is enough; withou
 
 - **A token is single-use.** The widget resets after every Livewire request that carried it, so a failed login makes the
   visitor tick the box again. A request that carries the token without verifying it (a `live()` field in the same form) also
-  resets it; keep the captcha form free of `live()` fields on the checkbox drivers if that annoys you.
-- **Never hide the field with `->visible()` / `->hidden()`.** Hidden Filament fields are not validated, so that would open the
+  resets it. Only a request that called a method (a submit) resets the widget, so `live()` field updates do not undo a solved
+  challenge. The reset event from `resetCaptcha()` is scoped to the Livewire component, so two forms on one page do not
+  clear each other.
+- **Never hide the field with `->visible()` / `->hidden()`** (the multi-factor step above is the one built-in exception). Hidden Filament fields are not validated, so that would open the
   form to bots. The field already draws nothing in fake / disabled mode (where the rule passes anyway) and draws an error in
   misconfigured mode (where the rule fails).
 - **Missing keys in production fail the form**, on purpose. In `local` and `testing` they disable the captcha with a warning in

@@ -55,11 +55,12 @@ class Captcha extends Field
         // what skips saving, the rules run on the raw state.
         $this->dehydrated(false);
 
-        $this->rule(fn (): CaptchaRule => app(CaptchaManager::class)
-            ->rule($this->getDriver())
-            ->action($this->getCaptchaAction())
-            ->minScore($this->getMinScore())
-            ->hostnames($this->getHostnames()));
+        // Receives the component being validated (a cloned item inside a Repeater), not the template.
+        $this->rule(fn (Captcha $component): CaptchaRule => app(CaptchaManager::class)
+            ->rule($component->getDriver())
+            ->action($component->getCaptchaAction())
+            ->minScore($component->getMinScore())
+            ->hostnames($component->getHostnames()));
     }
 
     public function driver(string|Closure|null $driver): static

@@ -8,6 +8,7 @@ use Asignua\FilamentCaptcha\Facades\Captcha;
 use Asignua\FilamentCaptcha\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Vite;
 use Livewire\Livewire;
 use Workbench\App\Livewire\ContactForm;
 
@@ -99,7 +100,7 @@ class LivewireComponentTest extends TestCase
 
     public function test_the_widget_carries_the_csp_nonce_and_messages_to_the_script(): void
     {
-        \Illuminate\Support\Facades\Vite::useCspNonce('abc123');
+        Vite::useCspNonce('abc123');
 
         $html = Blade::render('<x-filament-captcha::widget driver="turnstile" />');
 
@@ -118,7 +119,7 @@ class LivewireComponentTest extends TestCase
 
     public function test_the_scripts_tag_has_a_versioned_url_and_the_nonce(): void
     {
-        \Illuminate\Support\Facades\Vite::useCspNonce('n0nce');
+        Vite::useCspNonce('n0nce');
 
         $html = Blade::render('<x-filament-captcha::scripts />');
 

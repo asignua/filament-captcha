@@ -16,6 +16,9 @@ use Illuminate\Http\Client\Factory;
  */
 abstract class SiteVerifyDriver implements CaptchaDriver
 {
+    /** Real tokens are well under 4 KB; anything longer is never sent to the provider. */
+    protected const MAX_TOKEN_LENGTH = 4096;
+
     /**
      * @param array<string, mixed> $config
      */
@@ -63,6 +66,10 @@ abstract class SiteVerifyDriver implements CaptchaDriver
             return VerificationResult::failed(Failure::MissingToken);
         }
 
+        if (strlen($request->token) > self::MAX_TOKEN_LENGTH) {
+            return VerificationResult::failed(Failure::Rejected, ['token-too-long']);
+        }
+
         try {
             $response = $this->http
                 ->asForm()
@@ -78,8 +85,17 @@ abstract class SiteVerifyDriver implements CaptchaDriver
 
         $data = $response->json();
 
-        if (!$response->successful() || !is_array($data)) {
+        if ($response->serverError() || $response->status() === 429) {
             return VerificationResult::failed(Failure::Unavailable, ['http-'.$response->status()]);
+        }
+
+        // Another 4xx is the provider refusing this very request (a crafted token, say): not an outage.
+        if (!$response->successful()) {
+            return VerificationResult::failed(Failure::Rejected, ['http-'.$response->status()]);
+        }
+
+        if (!is_array($data)) {
+            return VerificationResult::failed(Failure::Unavailable, ['bad-response']);
         }
 
         $codes = $this->errorCodes($data);
