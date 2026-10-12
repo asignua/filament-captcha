@@ -2,11 +2,11 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
-## 1.0.1 - Unreleased
+## 1.0.1 - 2026-10-12
 
 - Docs: screenshots, cover and a workbench demo.
 
-## 1.0.0 - unreleased
+## 1.0.0 - 2026-10-08
 
 - `Captcha::make()` field for Filament schemas with an attached validation rule; `<x-filament-captcha::widget>` and
   `InteractsWithCaptcha` for plain Livewire components.
