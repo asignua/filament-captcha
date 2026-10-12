@@ -2,6 +2,10 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
+## 1.0.1 - Unreleased
+
+- Docs: screenshots, cover and a workbench demo.
+
 ## 1.0.0 - unreleased
 
 - `Captcha::make()` field for Filament schemas with an attached validation rule; `<x-filament-captcha::widget>` and
