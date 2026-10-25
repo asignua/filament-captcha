@@ -2,6 +2,11 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
+## 1.0.2 - 2026-10-25
+
+- Screenshots and the cover carry the «made in asign» mark; README shows the Stand With Ukraine badge.
+- Dependency updates (CI actions, dev tooling).
+
 ## 1.0.1 - 2026-10-12
 
 - Docs: screenshots, cover and a workbench demo.

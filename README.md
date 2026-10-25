@@ -2,7 +2,7 @@
 
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 
-<img class="filament-hidden" src="https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/cover.jpg" alt="Filament Captcha">
+<img class="filament-hidden" src="https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/cover.jpg" alt="Filament Captcha">
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/asignua/filament-captcha/tests.yml?branch=main&label=tests)](https://github.com/asignua/filament-captcha/actions/workflows/tests.yml)
 
@@ -16,21 +16,21 @@ network.
 
 The login page with the Turnstile widget (the same field works on registration and password reset):
 
-![Login page with a Cloudflare Turnstile widget](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/login.jpg)
+![Login page with a Cloudflare Turnstile widget](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/login.jpg)
 
 A missing or failed check is reported under the widget and the single-use token is reset:
 
-![Error message under the captcha widget](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/error.jpg)
+![Error message under the captcha widget](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/error.jpg)
 
-![The widget after the check passed](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/solved.jpg)
+![The widget after the check passed](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/solved.jpg)
 
 `Captcha::make()` in an ordinary Filament form:
 
-![A Filament form with the Captcha field](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/form.jpg)
+![A Filament form with the Captcha field](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/form.jpg)
 
 Dark mode:
 
-![Login page in dark mode](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.1/art/login-dark.jpg)
+![Login page in dark mode](https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/login-dark.jpg)
 
 ## Requirements
 
