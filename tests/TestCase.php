@@ -88,11 +88,19 @@ abstract class TestCase extends Orchestra
      */
     protected function clientConfig(string $html): array
     {
-        $this->assertSame(1, preg_match("/JSON\\.parse\\('(.*?)'\\)/s", $html, $matches), 'No widget config in the HTML.');
+        // Filament 5.11 puts its own JSON.parse('…') payloads (field key, exposed methods) on the page too — take ours.
+        $this->assertGreaterThan(0, preg_match_all("/JSON\\.parse\\('(.*?)'\\)/s", $html, $matches), 'No widget config in the HTML.');
 
-        // The payload is the body of a JS string literal; its escapes (\u0022, \/) are JSON-compatible.
-        $json = json_decode('"'.$matches[1].'"', false, flags: JSON_THROW_ON_ERROR);
+        foreach ($matches[1] as $body) {
+            // The payload is the body of a JS string literal; its escapes (\u0022, \/) are JSON-compatible.
+            $json = json_decode('"'.$body.'"', false, flags: JSON_THROW_ON_ERROR);
+            $config = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
-        return json_decode($json, true, flags: JSON_THROW_ON_ERROR);
+            if (is_array($config) && array_key_exists('scriptUrl', $config)) {
+                return $config;
+            }
+        }
+
+        $this->fail('No widget config in the HTML.');
     }
 }
