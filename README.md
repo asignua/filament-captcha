@@ -268,6 +268,15 @@ vendor/bin/pint --test
 
 See [CHANGELOG.md](CHANGELOG.md).
 
+## More plugins by asign
+
+- [Mail Log](https://filamentphp.com/plugins/asign-mail-log) — journal of outgoing mail
+- [CSP Nonce](https://filamentphp.com/plugins/asign-csp-nonce) — Content-Security-Policy nonces for Filament
+- [IBAN](https://filamentphp.com/plugins/asign-iban) — IBAN input and validation
+- [Themes](https://filamentphp.com/plugins/asign-themes) — per-user and per-panel colour themes
+
+All plugins: <https://filamentphp.com/plugins?q=asign>
+
 ## License
 
 The MIT License (MIT). See [LICENSE.md](LICENSE.md).
