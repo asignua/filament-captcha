@@ -2,7 +2,7 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
-## 1.0.3 - 2026-11-03
+## 1.0.3 - unreleased
 
 - reCAPTCHA v3: the periodic token refresh is skipped in a hidden tab; on return, a token older than the refresh interval is renewed once.
 

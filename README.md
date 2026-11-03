@@ -191,7 +191,7 @@ URL: the package resolves the HTTP client on every verification, so it honours y
 | `fail_open` (`CAPTCHA_FAIL_OPEN`) | `false` | let visitors through when the provider is unreachable (a rejected token is never let through) |
 | `hostnames` | `null` | `null` = no check, `true` = the request host, or an allow-list |
 | `theme` | `auto` | `auto` follows the `dark` class on `<html>` |
-| `token_refresh` | `100` | seconds between v3 token refreshes |
+| `token_refresh` | `100` | seconds between v3 token refreshes (min 30; skipped while the tab is hidden, renewed once on return) |
 | `script_path` | `filament-captcha/captcha.js` | `null` to serve `resources/js/captcha.js` yourself |
 | `drivers.*` | | `site_key`, `secret_key` per driver; reCAPTCHA `domain` (`www.recaptcha.net`), v3 `score_threshold` and default `action`, hCaptcha `size` (`invisible`) |
 
