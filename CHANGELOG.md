@@ -2,6 +2,10 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
+## 1.0.3 - 2026-11-03
+
+- reCAPTCHA v3: the periodic token refresh is skipped in a hidden tab; on return, a token older than the refresh interval is renewed once.
+
 ## 1.0.2 - 2026-10-25
 
 - Screenshots and the cover carry the «made in asign» mark; README shows the Stand With Ukraine badge.

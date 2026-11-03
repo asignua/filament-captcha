@@ -95,7 +95,9 @@
             destroyed: false,
             resolveToken: null,
             timer: null,
+            lastRefresh: 0,
             offs: [],
+            offVisible: null,
             form: null,
             onSubmit: null,
 
@@ -124,6 +126,7 @@
             destroy: function () {
                 this.destroyed = true;
                 clearInterval(this.timer);
+                this.stopVisibility();
                 this.offs.forEach(function (off) { off(); });
                 this.offs = [];
 
@@ -132,6 +135,13 @@
                 }
 
                 this.removeWidget();
+            },
+
+            stopVisibility: function () {
+                if (this.offVisible) {
+                    this.offVisible();
+                    this.offVisible = null;
+                }
             },
 
             mount: function () {
@@ -145,7 +155,25 @@
                     self.render();
 
                     if (config.driver === 'recaptcha_v3') {
-                        self.timer = setInterval(function () { self.fetchToken(); }, Math.max(30, config.refresh || 100) * 1000);
+                        var interval = Math.max(30, config.refresh || 100) * 1000;
+
+                        /* a mount is per instance: drop a previous timer/listener before starting new ones */
+                        clearInterval(self.timer);
+                        self.stopVisibility();
+
+                        /* a hidden tab does not refresh: that only burns Google calls for a token nobody will use */
+                        self.timer = setInterval(function () {
+                            if (!document.hidden) { self.fetchToken(); }
+                        }, interval);
+
+                        /* back in the tab: a token older than the interval is (nearly) expired, so renew once, now */
+                        var onVisible = function () {
+                            if (!document.hidden && !self.destroyed && Date.now() - self.lastRefresh >= interval) {
+                                self.fetchToken();
+                            }
+                        };
+                        document.addEventListener('visibilitychange', onVisible);
+                        self.offVisible = function () { document.removeEventListener('visibilitychange', onVisible); };
 
                         return self.fetchToken();
                     }
@@ -224,6 +252,7 @@
                 return this.getToken().then(function (token) {
                     if (!self.destroyed) {
                         self.state = token;
+                        self.lastRefresh = Date.now();
                     }
                     return token;
                 }).catch(function () {
