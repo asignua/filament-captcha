@@ -2,6 +2,10 @@
 
 All notable changes to `asignua/filament-captcha` are documented here.
 
+## v1.1.0 - 2026-11-10
+
+- Requires Filament ^5.11.2; replaced deprecated Filament API calls: none needed in code (phpstan deprecation scan clean; constraint raised).
+
 ## 1.0.3 - 2026-11-03
 
 - reCAPTCHA v3: the periodic token refresh is skipped in a hidden tab; on return, a token older than the refresh interval is renewed once.
