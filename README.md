@@ -1,10 +1,13 @@
 # Filament Captcha
 
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/asignua/filament-captcha.svg?style=flat-square)](https://packagist.org/packages/asignua/filament-captcha)
+[![Tests](https://img.shields.io/github/actions/workflow/status/asignua/filament-captcha/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/asignua/filament-captcha/actions/workflows/tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/asignua/filament-captcha.svg?style=flat-square)](https://packagist.org/packages/asignua/filament-captcha)
+[![License](https://img.shields.io/packagist/l/asignua/filament-captcha.svg?style=flat-square)](https://github.com/asignua/filament-captcha/blob/main/LICENSE.md)
+[![Plumb score](https://plumbphp.dev/badges/asignua/filament-captcha/composite.svg)](https://plumbphp.dev/asignua/filament-captcha)
 
 <img class="filament-hidden" src="https://raw.githubusercontent.com/asignua/filament-captcha/v1.0.2/art/cover.jpg" alt="Filament Captcha">
-
-[![Tests](https://img.shields.io/github/actions/workflow/status/asignua/filament-captcha/tests.yml?branch=main&label=tests)](https://github.com/asignua/filament-captcha/actions/workflows/tests.yml)
 
 A captcha field for [Filament](https://filamentphp.com) 5 forms and plain Livewire components. One field, one validation
 rule, five providers: **Google reCAPTCHA v2** (checkbox and invisible), **reCAPTCHA v3** (score and action),
@@ -276,6 +279,8 @@ See [CHANGELOG.md](CHANGELOG.md).
 - [Themes](https://filamentphp.com/plugins/asign-themes) — per-user and per-panel colour themes
 
 All plugins: <https://filamentphp.com/plugins?q=asign>
+
+Catalogue of free and commercial plugins: <https://asign.tech/en/plugins>
 
 ## License
 
